@@ -5,8 +5,10 @@ from PIL import Image, ImageDraw, ImageFont
 import pystray
 import os
 
-ICO_PATH = "resources/icon.ico"
-PNG_SOURCE_PATH = "resources/icon.png"
+# 获取项目根目录的绝对路径（从当前文件向上两级到项目根目录）
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ICO_PATH = os.path.join(_PROJECT_ROOT, "resources", "icon.ico")
+PNG_SOURCE_PATH = os.path.join(_PROJECT_ROOT, "resources", "icon.png")
 
 def ensure_icon_exists():
     """
@@ -77,4 +79,4 @@ def setup_tray_icon(app, icon_instance_ref, event_queue):
     # 创建并运行托盘图标
     icon = pystray.Icon("StrikeTimer", icon_image, "Strike Timer", menu)
     icon_instance_ref[0] = icon # 将icon实例存入引用列表
-    icon.run() 
+    icon.run()

@@ -1,7 +1,5 @@
-# GUI框架 - 推荐使用tkinter（Python内置）或PyQt5
-# 如果需要更现代的UI，可以考虑：
-# PyQt5>=5.15.0
-# 或者使用tkinter（无需安装）
+# GUI框架 - 使用tkinter（Python内置）
+# tkinter 无需安装
 
 # 输入监听
 pynput>=1.7.6
@@ -11,7 +9,7 @@ pystray>=0.19.0
 Pillow>=9.0.0
 
 # 音效处理
-pygame>=2.0.0  # 替代winsound，提供更好的跨平台支持
+# 使用 Windows 内置的 winsound 模块，无需额外依赖
 
 # 配置管理
 configparser>=5.0.0
@@ -22,4 +20,4 @@ pyinstaller>=4.0.0
 # 开发工具（可选）
 pytest>=6.0.0
 black>=21.0.0
-flake8>=3.8.0 
+flake8>=3.8.0

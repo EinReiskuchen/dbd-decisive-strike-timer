@@ -11,7 +11,7 @@ CLEAR_KEY = None
 # 清空所有待执行计时器的鼠标侧键，如不监测则设为 None
 CLEAR_MOUSE_BUTTON = 'x2'
 # 单个倒计时（秒）
-TIMEOUT = 2
+TIMEOUT = 60
 # 最大并发计时器数量
 MAX_TIMERS = 4
 # 系统音效别名

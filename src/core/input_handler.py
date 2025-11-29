@@ -8,16 +8,16 @@ from . import timer_manager
 
 def on_key_press(key):
     """键盘按下事件的回调函数"""
-    # 尝试将按键作为字符处理
-    try:
+    # 优先尝试将按键作为字符处理
+    if hasattr(key, 'char') and key.char:
         if config.CLEAR_KEY and key.char == config.CLEAR_KEY:
             timer_manager.clear_all_timers()
             return
         if config.KEY and key.char == config.KEY:
             timer_manager.start_new_timer()
             return
-    except AttributeError:
-        # 如果不是字符键，则作为特殊键处理
+    # 如果不是字符键，则作为特殊键处理
+    elif hasattr(key, 'name'):
         if config.CLEAR_KEY and key.name == config.CLEAR_KEY:
             timer_manager.clear_all_timers()
             return
@@ -63,4 +63,4 @@ def start_listening(stop_event):
     finally:
         kl.stop()
         ml.stop()
-        print("输入监听已停止。") 
+        print("输入监听已停止。")
