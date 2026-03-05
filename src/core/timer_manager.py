@@ -45,11 +45,9 @@ class CountdownTimer(threading.Thread):
             # 倒计时正常结束
             _put_event({'type': 'finish', 'id': self.timer_id})
             play_sound()
-        
-        # 无论是正常结束还是被手动停止，都发送一个销毁事件
-        _put_event({'type': 'destroy', 'id': self.timer_id})
-        # 调用内部函数，将自己从管理器中清理出去
-        _cleanup_timer(self.timer_id)
+            # 只有正常结束时才发送销毁事件和清理
+            _put_event({'type': 'destroy', 'id': self.timer_id})
+            _cleanup_timer(self.timer_id)
 
 
     def stop(self):
@@ -92,21 +90,19 @@ def clear_all_timers():
     with lock:
         if not timers:
             return
-        
+
         # 1. 立即向GUI发送清除指令
         _put_event({'type': 'clear_all'})
-        
-        # 2. 立即清空后端计时器字典，并向线程发送停止信号
-        timer_ids = list(timers.keys())
-        count = 0
-        for timer_id in timer_ids:
-            timer = timers.pop(timer_id, None)
-            if timer and timer.is_alive():
+
+        # 2. 停止所有计时器线程并清空字典
+        count = len(timers)
+        for timer in timers.values():
+            if timer.is_alive():
                 timer.stop()
-                count += 1
-        
+        timers.clear()
+
     if count > 0:
-        print(f"[{time.strftime('%H:%M:%S')}] 已发出清空信号，共停止 {count} 个计时器。")
+        print(f"[{time.strftime('%H:%M:%S')}] 已清空所有计时器，共停止 {count} 个。")
 
 def get_active_timers():
     """获取当前所有活动的计时器"""

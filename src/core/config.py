@@ -19,4 +19,6 @@ SYSTEM_SOUND_ALIAS = 'SystemExclamation'
 # 自定义音效（wav 文件路径），无则设为 None
 CUSTOM_SOUND_FILE = None
 # 是否将窗口始终置顶
-WINDOW_TOPMOST = True 
+WINDOW_TOPMOST = True
+# 是否显示准星
+SHOW_CROSSHAIR = True 

@@ -37,8 +37,8 @@ class App(tk.Tk):
     def _create_widgets(self):
         """创建基础UI组件，如待机标签。"""
         self.standby_label = tk.Label(
-            self.main_frame, text="Idle",
-            font=("Segoe UI", 16, "italic"),
+            self.main_frame, text="空闲",
+            font=("黑体", 16),
             fg="#888888", bg="#333333"
         )
         self.standby_label.pack(pady=10, padx=10, fill=tk.X)

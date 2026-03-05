@@ -1,8 +1,8 @@
 import threading
 import queue
 import signal
-from .core import timer_manager, input_handler
-from .gui import main_window, tray_icon
+from .core import timer_manager, input_handler, config
+from .gui import main_window, tray_icon, crosshair
 
 def main():
     """
@@ -10,10 +10,15 @@ def main():
     """
     stop_event = threading.Event()
     event_queue = queue.Queue()
-    tray_icon_instance = [None] 
+    tray_icon_instance = [None]
 
     timer_manager.set_event_queue(event_queue)
     app = main_window.App(event_queue)
+
+    # 创建准星窗口
+    crosshair_window = crosshair.CrosshairWindow(app)
+    if config.SHOW_CROSSHAIR:
+        crosshair_window.deiconify()
 
     # --- 统一的关闭流程 ---
     def on_close_request():
@@ -34,7 +39,7 @@ def main():
 
     # --- 启动后台线程 ---
     tray_thread = threading.Thread(
-        target=lambda: tray_icon.setup_tray_icon(app, tray_icon_instance, event_queue),
+        target=lambda: tray_icon.setup_tray_icon(app, tray_icon_instance, event_queue, crosshair_window),
         daemon=True
     )
     tray_thread.start()

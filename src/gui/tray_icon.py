@@ -51,32 +51,35 @@ def ensure_icon_exists():
     image.save(ICO_PATH, format="ICO")
     print(f"备用图标已创建于: {ICO_PATH}")
 
-def setup_tray_icon(app, icon_instance_ref, event_queue):
+def setup_tray_icon(app, icon_instance_ref, event_queue, crosshair_window):
     """
     设置并运行系统托盘图标。
     这个函数会阻塞，所以应该在一个独立的线程中运行。
     """
     ensure_icon_exists()
     icon_image = Image.open(ICO_PATH)
-    
+
     def on_clicked(icon, item):
         """定义菜单项被点击时的行为"""
         if str(item) == "显示/隐藏":
             if app.state() == 'withdrawn':
-                app.deiconify() # 显示窗口
+                app.deiconify()
             else:
-                app.withdraw() # 隐藏窗口
+                app.withdraw()
+        elif str(item) == "准星开关":
+            crosshair_window.toggle()
         elif str(item) == "退出":
-            event_queue.put({'type': 'exit'}) # 发送退出事件
-            icon.stop() # 停止托盘线程
+            event_queue.put({'type': 'exit'})
+            icon.stop()
 
     # 创建菜单项
     menu = (
         pystray.MenuItem('显示/隐藏', on_clicked, default=True),
+        pystray.MenuItem('准星开关', on_clicked),
         pystray.MenuItem('退出', on_clicked)
     )
 
     # 创建并运行托盘图标
     icon = pystray.Icon("StrikeTimer", icon_image, "Strike Timer", menu)
-    icon_instance_ref[0] = icon # 将icon实例存入引用列表
+    icon_instance_ref[0] = icon
     icon.run()

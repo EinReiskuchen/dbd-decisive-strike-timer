@@ -11,7 +11,10 @@ def build():
     print("=" * 60)
     print("开始打包 Strike Timer")
     print("=" * 60)
-    
+
+    # 根据平台选择路径分隔符
+    separator = ';' if sys.platform == 'win32' else ':'
+
     # PyInstaller 命令参数
     cmd = [
         'pyinstaller',
@@ -19,7 +22,7 @@ def build():
         '--onefile',                     # 打包成单个exe文件
         '--windowed',                    # 不显示控制台窗口（GUI应用）
         '--icon=resources/icon.ico',     # 图标文件（如果存在）
-        '--add-data=resources;resources', # 包含resources目录
+        f'--add-data=resources{separator}resources', # 包含resources目录
         '--clean',                       # 清理临时文件
         'run.py'                         # 入口脚本
     ]
